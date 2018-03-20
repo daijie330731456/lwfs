@@ -1,0 +1,54 @@
+#!/bin/bash
+#
+# chkconfig: 35 90 12
+# description: LWfsd server
+#
+
+# Get function from functions library
+. /etc/rc.d/init.d/functions
+
+BASE=lwfsd
+LWFSD_BIN=@exec_prefix@/sbin/$BASE
+CONFIGFILE=/etc/lwfs/lwfsd.vol
+LWFSD_OPTS="-f $CONFIGFILE"
+GSERVER="$LWFSD_BIN $LWFSD_OPTS"
+RETVAL=0
+
+# Start the service $BASE
+start()
+{
+       echo $"Starting $BASE:"
+       daemon $GSERVER
+       RETVAL=$?
+       [ $RETVAL -ne 0 ] && exit $RETVAL
+}
+
+# Stop the service $BASE
+stop()
+{
+       echo $"Stopping $BASE:"
+       killproc $BASE 
+}
+
+
+### service arguments ###
+case $1 in
+ start)
+       start
+       ;;
+ stop)
+       stop
+       ;;
+ status)
+       status $BASE
+       ;;
+ restart)
+       $0 stop
+       $0 start
+       ;;
+ *)
+       echo $"Usage: $0 {start|stop|status|restart}."
+       exit 1
+esac
+
+exit 0

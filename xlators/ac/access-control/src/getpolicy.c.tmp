@@ -1,0 +1,104 @@
+#include <ctype.h>
+#include <sys/uio.h>
+
+#ifndef _CONFIG_H
+#define _CONFIG_H
+#include "config.h"
+#endif
+
+#include "lwfs.h"
+#include "xlator.h"
+#include "logging.h"
+
+#include "access-control.h"
+#include "pwd.h"
+#include "posix.h"
+
+#define GP_STACK_DESTROY(frame) do {		       \
+		getxattr_local *__local = NULL;           \
+                xlator_t *__xl = NULL;                 \
+                __xl = frame->this;                    \
+		__local = frame->local;                \
+		frame->local = NULL;		       \
+		STACK_DESTROY (frame->root);	       \
+		gp_local_wipe (__xl, __local);	       \
+	} while (0)
+
+getxattr_local *
+get_policy_local_init (call_frame_t *frame)
+{
+	getxattr_local *local = NULL;
+
+	/* TODO: use mem-pool */
+	local = CALLOC (1, sizeof (*local));
+
+	if (!local)
+		return NULL;
+
+	local->op_ret = -1;
+	local->op_errno = EUCLEAN;
+
+	frame->local = local;
+
+	return local;
+}
+
+void
+gp_local_wipe (xlator_t *this, getxattr_local *local)
+{
+	if (!local)
+		return;
+
+	loc_wipe (&local->loc);
+
+	FREE (local);
+}
+
+static int32_t
+get_policy_cbk(all_frame_t *frame,
+                      void *cookie,
+                      xlator_t *this,
+                      int32_t op_ret,
+                      int32_t op_errno,
+                      dict_t *dict)
+{
+	
+	return 0;
+})
+
+int get_policy(call_frame_t* frame, xlator_t *this, loc_t* loc)
+{
+	call_frame_t* getxattr_frame = NULL;
+	ac_local* 	 getxattr_local  = NULL;
+	
+	getxattr_frame = copy_frame (frame);
+      if (!getxattr_frame) {
+      	gf_log (this->name, GF_LOG_ERROR,"Out of memory");
+                        goto err;
+        }
+
+       getxattr_local = get_policy_local_init (getxattr_frame);
+       if (!getxattr_local) {
+              gf_log (this->name, GF_LOG_ERROR,"Out of memory");
+              goto err;
+          }
+
+        loc_copy (&getxattr_local->loc, loc);
+        loc_t tmp_loc = { .inode = NULL,
+                          .path = "/",
+           };
+                
+         STACK_WIND (getxattr_frame, get_policy_cbk,
+                                    FIRST_CHILD(this),
+                                    FIRST_CHILD(this)->fops->getxattr,
+                                    &tmp_loc , "user.policy");
+            }
+        }
+        return 0;
+err:
+	if (getxattr_frame)
+	GP_STACK_DESTROY (statfs_frame);
+
+      return -1;
+}
+

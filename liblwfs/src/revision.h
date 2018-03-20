@@ -1,0 +1,1 @@
+#define LWFS_REPOSITORY_REVISION ""

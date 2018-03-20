@@ -1,0 +1,26 @@
+# $Id$
+
+PortSystem          1.0
+
+name                lwfs
+version             2.0.0rc8
+categories          fuse
+maintainers         amar@lw.com
+description         LWFS
+long_description    LWFS is a cluster file system, flexible to tune it for your needs.
+homepage            http://www.lw.org/
+platforms           darwin
+master_sites        http://ftp.lw.com/pub/lw/lwfs/2.0/2.0.0
+
+configure.args      --disable-bdb
+checksums           md5 33c2d02344d4fab422e80cfb637e0b48
+
+post-destroot {
+    file mkdir ${destroot}/Library/LaunchDaemons/
+    file copy ${worksrcpath}/extras/lwfs-server.plist \
+        ${destroot}/Library/LaunchDaemons/com.lw.lwfs.plist
+
+    file mkdir ${destroot}/sbin/
+    file copy ${worksrcpath}/xlators/mount/fuse/utils/mount_lwfs \
+	${destroot}/sbin/
+}

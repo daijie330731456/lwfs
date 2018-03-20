@@ -1,0 +1,11 @@
+LWFS is a flexible, powerful, POSIX-compliant cluster filesystem
+that can scale to several petabytes.
+
+LWFS works over either TCP/IP or high-performance Infiniband RDMA
+interconnect.
+
+LWFS provides striping and on-the-fly synchronous replication
+of files. LWFS has a fully distributed design, with no
+single point of failure.
+
+Please visit http://www.lw.org/lwfs.php for more info.
