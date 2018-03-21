@@ -2,6 +2,7 @@
 
 extern int CRYPT_BLOCK_SIZE;
 extern const char iv[];
+extern bswabe_pub_t* pub;
 
 //全局变量缓存对称密钥
 struct aes_key_cache_from_priv key_cache;
@@ -25,12 +26,12 @@ void read_cph_done(call_frame_t* frame, xlator_t* this)
 	
 	int32_t op_errno = 1;
 	
-	char* pub_path = NULL;
+	//char* pub_path = NULL;
 	char* priv_path = NULL;
-	MAKE_PUB_PATH (pub_path, this);
+	//MAKE_PUB_PATH (pub_path, this);
 	MAKE_PRIV_PATH (priv_path, this);
 
-	bswabe_pub_t* pub;
+	//bswabe_pub_t* pub;
 	bswabe_prv_t* prv;
 	//element_t m;
 	bswabe_cph_t* cph;
@@ -38,7 +39,7 @@ void read_cph_done(call_frame_t* frame, xlator_t* this)
 	gettimeofday(&start, NULL);
 
 	//后面的1为free位，选择读后自动free
-	pub = bswabe_pub_unserialize(suck_file(pub_path), 1);
+	//pub = bswabe_pub_unserialize(suck_file(pub_path), 1);
 	prv = bswabe_prv_unserialize(pub, suck_file(priv_path), 1);
 
 	gettimeofday(&end, NULL);
