@@ -21,6 +21,7 @@
 
 int CRYPT_BLOCK_SIZE;
 int PTHREAD_COUNT;
+bswabe_pub_t* pub
 
 extern struct aes_key_cache_from_priv key_cache;
 
@@ -462,7 +463,7 @@ en_setxattr (call_frame_t *frame,
 	int32_t op_ret = -1;
 	int32_t op_errno = 1;
 	char* real_path = NULL;
-	char* pub_path = NULL;
+	//char* pub_path = NULL;
 	char* priv_path = NULL;
 
 	data_t* data = dict_get(dict, ENCRYPT_XATTR);
@@ -472,7 +473,7 @@ en_setxattr (call_frame_t *frame,
 	gf_log(this->name, GF_LOG_TRACE, "%swill setxattr encrypt: %s",  loc->path, data->data);
 	
 	MAKE_REAL_PATH (real_path, this, loc->path);
-	MAKE_PUB_PATH (pub_path, this);
+	//MAKE_PUB_PATH (pub_path, this);
 	MAKE_PRIV_PATH (priv_path, this);
 
 
@@ -489,7 +490,7 @@ en_setxattr (call_frame_t *frame,
 		}
 		else if(is_ABE(enc_policy))
 		{
-			if(cpabe_decrypt_file(real_path, pub_path, priv_path) == -1)
+			if(cpabe_decrypt_file(real_path, priv_path) == -1)
 			{
 				gf_log(this->name, GF_LOG_WARNING, "the priv can not decrypt!");
 				op_errno = 13;				
@@ -536,8 +537,8 @@ en_setxattr (call_frame_t *frame,
 			goto error;
 		}
 		//gf_log(this->name, GF_LOG_TRACE, "the policy used for cpabe encryption: %d%d%d%d%d%d", policy[0], policy[1], policy[2], policy[3], policy[4], policy[5]);
-		gf_log(this->name, GF_LOG_TRACE, "real_path:%s, pub_path:%s", real_path, pub_path);
-		if(cpabe_encrypt_file(real_path, pub_path, policy) == -1)
+		gf_log(this->name, GF_LOG_TRACE, "real_path:%s", real_path);
+		if(cpabe_encrypt_file(real_path, policy) == -1)
 		{
 			gf_log(this->name, GF_LOG_WARNING, "the policy cannot gennerate aeskey!");
 			op_errno = 22;				
@@ -610,7 +611,7 @@ en_removexattr (call_frame_t *frame,
 	int32_t op_ret = -1;
 	int32_t op_errno = 1;
 	char* real_path = NULL;
-	char* pub_path = NULL;
+	//char* pub_path = NULL;
 	char* priv_path = NULL;
 
 	//对user.encrypt扩展属性的移除，需要将底层的密文存储还原成明文
@@ -619,7 +620,7 @@ en_removexattr (call_frame_t *frame,
 	gf_log(this->name, GF_LOG_TRACE, "will removexattr : ENCRYPT_XATTR, begin to decrypt file!");
 	
 	MAKE_REAL_PATH (real_path, this, loc->path);
-	MAKE_PUB_PATH (pub_path, this);
+	//MAKE_PUB_PATH (pub_path, this);
 	MAKE_PRIV_PATH (priv_path, this);
 	
 	char enc_policy[4];
@@ -633,7 +634,7 @@ en_removexattr (call_frame_t *frame,
 		}
 		else if(is_ABE(enc_policy))
 		{
-			if(cpabe_decrypt_file(real_path, pub_path, priv_path) == -1)
+			if(cpabe_decrypt_file(real_path, priv_path) == -1)
 			{
 				gf_log(this->name, GF_LOG_WARNING, "the priv can not decrypt!");
 				op_errno = 13;				
@@ -2886,6 +2887,11 @@ init (xlator_t *this)
 	}
 	PTHREAD_COUNT = data_to_int32(dict_get(this->options, "pthread_count"));
 
+	char* pubkeyName = alloca(8 + priv->base_path_length + 2);
+	strcpy (pubkeyName, priv->base_path);
+    strcpy (&var[priv->base_path_length], "/pub_key");
+	pub = bswabe_pub_unserialize(suck_file(pubkeyName), 0);
+
 	
 	this->private = priv;
 	gf_log ("en", GF_LOG_DEBUG, "en xlator loaded");
@@ -2902,6 +2908,8 @@ fini (xlator_t *this)
 	struct en_private *priv = this->private;
 	
 	FREE (priv);
+
+	bswabe_pub_free(pub);
 	
 	return;
 }

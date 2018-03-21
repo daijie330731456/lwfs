@@ -2,6 +2,7 @@
 
 extern const char iv[];
 extern int CRYPT_BLOCK_SIZE;
+extern bswabe_pub_t* pub;
 
 /*******************************************
 功能：对字符串进行aes解密
@@ -164,16 +165,16 @@ void do_aes_decrypt_file(const char* pathname, AES_KEY* KEY)
 输出：直接对该文进进行原地还原
       解密成功返回0，失败返回-1
 *************************************/
-int cpabe_decrypt_file(const char* pathname, const char* pubkey, const char* privkey)
+int cpabe_decrypt_file(const char* pathname, const char* privkey)
 {
-	bswabe_pub_t* pub;
+	//bswabe_pub_t* pub;
 	bswabe_prv_t* prv;
 	GByteArray* cph_buf;
 	bswabe_cph_t* cph;
 	element_t m;
 	
 	//后面的1为free位，选择读后自动free
-	pub = bswabe_pub_unserialize(suck_file(pubkey), 1);
+	//pub = bswabe_pub_unserialize(suck_file(pubkey), 1);
 	prv = bswabe_prv_unserialize(pub, suck_file(privkey), 1);
 
 	read_cphbuf(pathname ,&cph_buf);

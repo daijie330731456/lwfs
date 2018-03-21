@@ -3,6 +3,7 @@
 
 extern const char iv[];
 extern int CRYPT_BLOCK_SIZE;
+extern bswabe_pub_t* pub;
 
 /******************************************
 功能：对字符串进行128位CBC模式AES加密
@@ -158,13 +159,13 @@ void do_aes_encrypt_file(const char* pathname, AES_KEY* KEY)
 功能：对一个文件进行CPABE加密
       每一个CRYPT_BLOCK_SIZE大小视为一个独立的加密单位
       底层调用的是128位cbc模式AES对称加密
-输入：文件名，公钥文件名，策略字符串
+输入：文件名，公钥文件名，策略字符串(修改之后，公钥从内存中读)
 输出：密文，直接对该文件进行原地加密
        policy密文以扩展属性的格式和文件存储在一起
 *************************************************/
-int cpabe_encrypt_file(const char* pathname, const char* pubkey, char* policy)
+int cpabe_encrypt_file(const char* pathname, char* policy)
 {
-	bswabe_pub_t* pub;
+	//bswabe_pub_t* pub;
 	bswabe_cph_t* cph;
 	GByteArray* cph_buf;
 	element_t m;
@@ -173,8 +174,11 @@ int cpabe_encrypt_file(const char* pathname, const char* pubkey, char* policy)
 	struct timeval start, end;
 
 	//gettimeofday(&start, NULL);
+
+	
 	//加载公钥文件pubkey
-	pub = bswabe_pub_unserialize(suck_file(pubkey), 1);
+	//pub = bswabe_pub_unserialize(suck_file(pubkey), 1);
+	
 	//gettimeofday(&end, NULL);
 	//gf_log("enc", GF_LOG_TRACE, "pub unserialize use time:%d",
 		//(end.tv_sec - start.tv_sec)*1000000 + (end.tv_usec - start.tv_usec));
