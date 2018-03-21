@@ -263,10 +263,10 @@ die(char* fmt, ...)
 
 void* func(void* arg)
 {
-	struct timeval start, end;
-	gettimeofday(&start, NULL);
+	//struct timeval start, end;
+	//gettimeofday(&start, NULL);
 
-	gf_log("crypt-common", GF_LOG_TRACE, "thread begin at %lld", start.tv_sec*1000000 + start.tv_usec );
+	//gf_log("crypt-common", GF_LOG_TRACE, "thread begin at %lld", start.tv_sec*1000000 + start.tv_usec );
 
 	struct pthread_args* args = (struct pthread_args *)arg;
 	
@@ -275,10 +275,10 @@ void* func(void* arg)
 	else
 		do_decrypt_buf(args->buf, args->size, args->KEY);
 
-	gettimeofday(&end, NULL);
-	gf_log("crypt-common", GF_LOG_TRACE, "this thread use time:%d", (end.tv_sec - start.tv_sec)*1000000 + (end.tv_usec - start.tv_usec) );
+	//gettimeofday(&end, NULL);
+	//gf_log("crypt-common", GF_LOG_TRACE, "this thread use time:%d", (end.tv_sec - start.tv_sec)*1000000 + (end.tv_usec - start.tv_usec) );
 	
-	gf_log("crypt-common", GF_LOG_TRACE, "thread end at %lld", end.tv_sec*1000000 + end.tv_usec );
+	//gf_log("crypt-common", GF_LOG_TRACE, "thread end at %lld", end.tv_sec*1000000 + end.tv_usec );
 	pthread_exit(NULL);
 }
 
@@ -337,7 +337,7 @@ void do_crypt_buf_pthread(char* buf, size_t size, AES_KEY* KEY, int enc)
 		args[i].size = sizes[i];
 		args[i].KEY = KEY;
 		args[i].enc = enc;
-		gf_log("encryption", GF_LOG_TRACE, "user thread to calculate %d - %d", has_alloc,has_alloc + sizes[i]);
+		//gf_log("encryption", GF_LOG_TRACE, "user thread to calculate %d - %d", has_alloc,has_alloc + sizes[i]);
 		has_alloc += sizes[i];
 		rc = pthread_create(&threads[i], NULL, func, (void *)&args[i]);
 		if(rc){

@@ -21,7 +21,7 @@
 
 int CRYPT_BLOCK_SIZE;
 int PTHREAD_COUNT;
-bswabe_pub_t* pub
+bswabe_pub_t* pub;
 
 extern struct aes_key_cache_from_priv key_cache;
 
@@ -2889,7 +2889,7 @@ init (xlator_t *this)
 
 	char* pubkeyName = alloca(8 + priv->base_path_length + 2);
 	strcpy (pubkeyName, priv->base_path);
-    strcpy (&var[priv->base_path_length], "/pub_key");
+    strcpy (&pubkeyName[priv->base_path_length], "/pub_key");
 	pub = bswabe_pub_unserialize(suck_file(pubkeyName), 0);
 
 	

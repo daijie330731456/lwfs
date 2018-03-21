@@ -342,11 +342,11 @@ configure:11549: checking lex output file root
 configure:11563: result: lex.yy
 configure:11568: checking lex library
 configure:11582: gcc -o conftest -g -O2   conftest.c   >&5
-/tmp/ccxKfebQ.o: In function `input':
+/tmp/cchdGlZw.o: In function `input':
 /home/lwfs/Desktop/123/lwfs-3.0.2.IOD/lex.yy.c:1170: undefined reference to `yywrap'
-/tmp/ccxKfebQ.o: In function `yylex':
+/tmp/cchdGlZw.o: In function `yylex':
 conftest.c:(.text+0xecd): undefined reference to `yywrap'
-/tmp/ccxKfebQ.o: In function `main':
+/tmp/cchdGlZw.o: In function `main':
 /home/lwfs/Desktop/123/lwfs-3.0.2.IOD/conftest.l:18: undefined reference to `yywrap'
 collect2: error: ld returned 1 exit status
 configure:11582: $? = 1
@@ -5737,11 +5737,11 @@ configure: failed program was:
 configure:11592: result: none needed
 configure:11598: checking whether yytext is a pointer
 configure:11615: gcc -o conftest -g -O2   conftest.c   >&5
-/tmp/cckGQYlN.o: In function `input':
+/tmp/ccx95ZRD.o: In function `input':
 /home/lwfs/Desktop/123/lwfs-3.0.2.IOD/lex.yy.c:1170: undefined reference to `yywrap'
-/tmp/cckGQYlN.o: In function `yylex':
+/tmp/ccx95ZRD.o: In function `yylex':
 conftest.c:(.text+0xecd): undefined reference to `yywrap'
-/tmp/cckGQYlN.o: In function `main':
+/tmp/ccx95ZRD.o: In function `main':
 /home/lwfs/Desktop/123/lwfs-3.0.2.IOD/conftest.l:18: undefined reference to `yywrap'
 collect2: error: ld returned 1 exit status
 configure:11615: $? = 1
@@ -7551,7 +7551,7 @@ configure:11806: $? = 0
 configure:11815: result: yes
 configure:11829: checking for dlopen
 configure:11829: gcc -o conftest -g -O2 -I/usr/local/ib_hpc/include   conftest.c -lpthread  -L/usr/local/ib_hpc/lib64 >&5
-/tmp/ccfdQqNa.o: In function `main':
+/tmp/cc2shKgU.o: In function `main':
 /home/lwfs/Desktop/123/lwfs-3.0.2.IOD/conftest.c:58: undefined reference to `dlopen'
 collect2: error: ld returned 1 exit status
 configure:11829: $? = 1

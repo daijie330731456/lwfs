@@ -598,7 +598,7 @@ configure:6219: $? = 0
 configure:6219: result: yes
 configure:6225: checking for _doprnt
 configure:6225: gcc -o conftest -g -O2   conftest.c  >&5
-/tmp/cc1pFhAA.o: In function `main':
+/tmp/ccL7ZGUa.o: In function `main':
 /home/lwfs/Desktop/123/lwfs-3.0.2.IOD/argp-standalone/conftest.c:69: undefined reference to `_doprnt'
 collect2: error: ld returned 1 exit status
 configure:6225: $? = 1

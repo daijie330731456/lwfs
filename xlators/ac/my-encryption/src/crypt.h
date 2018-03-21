@@ -40,14 +40,14 @@
 void aes_encrypt_buf(const unsigned char* buf,unsigned char* ciphertext,const int length,AES_KEY* KEY, const char* iv);
 void aes_encrypt_file(const char* pathname);
 void do_aes_encrypt_file(const char* pathname, AES_KEY* KEY);
-int cpabe_encrypt_file(const char* pathname, const char* pubkey, char* policy);
+int cpabe_encrypt_file(const char* pathname, char* policy);
 
 
 //解密相关函数
 void aes_decrypt_buf(const unsigned char* ciphertext,unsigned char* plaintext,const int length,AES_KEY* KEY,const char* iv);
 void aes_decrypt_file(const char* pathname);
 void do_aes_decrypt_file(const char* pathname, AES_KEY* KEY);
-int cpabe_decrypt_file(const char* pathname, const char* pubkey, const char* privkey);
+int cpabe_decrypt_file(const char* pathname, const char* privkey);
 
 
 //common相关函数
